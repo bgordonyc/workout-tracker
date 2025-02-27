@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <h1>Workout Tracker</h1>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- This will be dynamically populated based on the active tab -->
+        </main>
+
+        <!-- Navigation Tabs -->
+        <nav class="tab-navigation">
+            <div class="tab" data-tab="plan">
+                <i class="material-icons">create</i>
+                <span>Plan</span>
+            </div>
+            <div class="tab" data-tab="execute">
+                <i class="material-icons">fitness_center</i>
+                <span>Execute</span>
+            </div>
+            <div class="tab" data-tab="history">
+                <i class="material-icons">history</i>
+                <span>History</span>
+            </div>
+            <div class="tab" data-tab="progress">
+                <i class="material-icons">trending_up</i>
+                <span>Progress</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Templates -->
+    
+    <!-- Plan Workout Template -->
+    <template id="plan-template">
+        <div class="screen plan-screen">
+            <h2>Plan Workout</h2>
+            <form id="workout-form">
+                <div class="input-group">
+                    <label for="workout-name">Workout Name:</label>
+                    <input type="text" id="workout-name" required>
+                </div>
+                
+                <div id="exercises-container">
+                    <!-- Exercise inputs will be added here -->
+                </div>
+                
+                <button type="button" id="add-exercise-btn" class="secondary-btn">Add Exercise</button>
+                <button type="submit" class="primary-btn">Save Workout</button>
+            </form>
+        </div>
+    </template>
+    
+    <!-- Exercise Input Template -->
+    <template id="exercise-input-template">
+        <div class="exercise-input">
+            <h3>Exercise</h3>
+            <div class="input-group">
+                <label for="muscle-group">Muscle Group:</label>
+                <select id="muscle-group" required>
+                    <option value="">Select Muscle Group</option>
+                    <option value="Chest">Chest</option>
+                    <option value="Back">Back</option>
+                    <option value="Shoulders">Shoulders</option>
+                    <option value="Arms">Arms</option>
+                    <option value="Legs">Legs</option>
+                    <option value="Core">Core</option>
+                    <option value="Cardio">Cardio</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="exercise-name">Exercise Name:</label>
+                <input type="text" id="exercise-name" required>
+            </div>
+            <div class="input-group">
+                <label for="exercise-type">Exercise Type:</label>
+                <select id="exercise-type" required>
+                    <option value="">Select Type</option>
+                    <option value="Strength">Strength</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Flexibility">Flexibility</option>
+                </select>
+            </div>
+            <div class="input-group sets-reps-container">
+                <div class="sets-input">
+                    <label for="target-sets">Target Sets:</label>
+                    <input type="number" id="target-sets" min="1" value="3">
+                </div>
+                <div class="reps-input">
+                    <label for="target-reps">Target Reps:</label>
+                    <input type="number" id="target-reps" min="1" value="10">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="target-weight">Target Weight (lbs):</label>
+                <input type="number" id="target-weight" min="0" step="2.5" value="0">
+            </div>
+            <button type="button" class="delete-exercise-btn danger-btn">Remove</button>
+        </div>
+    </template>
+    
+    <!-- Execute Workout Template -->
+    <template id="execute-template">
+        <div class="screen execute-screen">
+            <h2>Execute Workout</h2>
+            <div class="workout-selection">
+                <label for="workout-select">Select Workout:</label>
+                <select id="workout-select">
+                    <option value="">Choose a workout</option>
+                    <!-- Workout options will be populated here -->
+                </select>
+            </div>
+            <div id="execution-container" class="hidden">
+                <h3 id="execution-workout-name"></h3>
+                <div id="execution-exercises">
+                    <!-- Exercises will be populated here -->
+                </div>
+                <button id="complete-workout-btn" class="primary-btn" disabled>Complete Workout</button>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Exercise Execution Item Template -->
+    <template id="exercise-execution-template">
+        <div class="exercise-execution-item">
+            <div class="exercise-checkbox">
+                <input type="checkbox" id="exercise-check">
+                <label for="exercise-check"></label>
+            </div>
+            <div class="exercise-info">
+                <h4 class="exercise-name"></h4>
+                <p class="exercise-details"></p>
+                <div class="performance-inputs">
+                    <div class="input-group">
+                        <label>Actual Sets:</label>
+                        <input type="number" class="actual-sets" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Actual Reps:</label>
+                        <input type="number" class="actual-reps" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Actual Weight (lbs):</label>
+                        <input type="number" class="actual-weight" min="0" step="2.5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- History Template -->
+    <template id="history-template">
+        <div class="screen history-screen">
+            <h2>Workout History</h2>
+            <div id="history-list">
+                <!-- Completed workouts will be displayed here -->
+            </div>
+        </div>
+    </template>
+    
+    <!-- Progress Template -->
+    <template id="progress-template">
+        <div class="screen progress-screen">
+            <h2>Progress Tracking</h2>
+            <div class="exercise-selection">
+                <label for="exercise-progress-select">Select Exercise:</label>
+                <select id="exercise-progress-select">
+                    <option value="">Choose an exercise</option>
+                    <!-- Exercise options will be populated here -->
+                </select>
+            </div>
+            <div id="progress-chart-container" class="hidden">
+                <h3 id="progress-exercise-name"></h3>
+                <div id="progress-data">
+                    <!-- Progress data will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
